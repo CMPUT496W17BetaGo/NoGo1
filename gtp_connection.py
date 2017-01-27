@@ -66,6 +66,15 @@ class GtpConnection():
             "play": (2, 'Usage: play {b,w} MOVE'),
             "legal_moves": (1, 'Usage: legal_moves {w,b}')
         }
+
+        self.illegalmsg = ["wrong number of arguments",
+                           "wrong color",
+                           "wrong coodinate",
+                           "occupied",
+                           "capture",
+                           "suicide"
+                           "passing"]
+
     
     def __del__(self):
         sys.stdout = self.stdout
@@ -267,6 +276,13 @@ class GtpConnection():
         """
         try:
             board_color = args[0].lower()
+
+            #~~~~~~~~~~~~~~~~~
+            if board_color not in {'b','w'}:
+                self.respond("Illegal Move: {}".format(board_color, self.illegalmsg[1]))
+                return
+            #~~~~~~~~~~~~~~~~~
+
             color= GoBoardUtil.color_to_int(board_color)
             moves=GoBoardUtil.generate_legal_moves(self.board,color)
             self.respond(moves)
@@ -290,11 +306,22 @@ class GtpConnection():
         try:
             board_color = args[0].lower()
             board_move = args[1]
+
+            #~~~~~~~~~~~
+            if board_color not in {'b','w'}:
+                self.respond("Illegal Move: {}".format(board_color, board_move, self.illegalmsg[1]))
+                return
+            #~~~~~~~~~~~
+
             color= GoBoardUtil.color_to_int(board_color)
             if args[1].lower()=='pass':
                 #self.debug_msg("Player {} is passing\n".format(args[0]))
-                self.respond("Illegal Move: {}".format(board_move))
+
+                #~~~~~~~~~~~~~~~~~
+                self.respond("Illegal Move: {}".format(board_color, board_move, self.illegalmsg[6]))
                 return
+                #~~~~~~~~~~~~~~~~~
+
             move = GoBoardUtil.move_to_coord(args[1], self.board.size)
             if move:
                 move = self.board._coord_to_point(move[0],move[1])
@@ -328,6 +355,13 @@ class GtpConnection():
         """
         try:
             board_color = args[0].lower()
+
+            #############
+            if board_color not in {'b','w'}:
+                self.respond("Illegal Move: {}".format(board_color, self.illegalmsg[1]))
+                return
+            #############
+
             color = GoBoardUtil.color_to_int(board_color)
             self.debug_msg("Board:\n{}\nko: {}\n".format(str(self.board.get_twoD_board()),
                                                           self.board.ko_constraint))
