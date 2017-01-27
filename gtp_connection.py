@@ -292,8 +292,8 @@ class GtpConnection():
             board_move = args[1]
             color= GoBoardUtil.color_to_int(board_color)
             if args[1].lower()=='pass':
-                self.debug_msg("Player {} is passing\n".format(args[0]))
-                self.respond()
+                #self.debug_msg("Player {} is passing\n".format(args[0]))
+                self.respond("Illegal Move: {}".format(board_move))
                 return
             move = GoBoardUtil.move_to_coord(args[1], self.board.size)
             if move:
@@ -333,7 +333,8 @@ class GtpConnection():
                                                           self.board.ko_constraint))
             move = self.go_engine.get_move(self.board, color)
             if move is None:
-                self.respond("pass")
+                #self.respond("pass")
+                self.respond("No legal moves. You lose the game")
                 return
 
             if not self.board.check_legal(move, color):
