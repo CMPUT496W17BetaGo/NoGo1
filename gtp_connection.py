@@ -72,7 +72,7 @@ class GtpConnection():
                            "wrong coodinate",
                            "occupied",
                            "capture",
-                           "suicide"
+                           "suicide",
                            "passing"]
 
     
@@ -279,7 +279,7 @@ class GtpConnection():
 
             #~~~~~~~~~~~~~~~~~
             if board_color not in {'b','w'}:
-                self.respond("Illegal Move: {}".format(board_color, self.illegalmsg[1]))
+                self.respond("Illegal Move: "+format(board_color+' '+self.illegalmsg[1]))
                 return
             #~~~~~~~~~~~~~~~~~
 
@@ -307,20 +307,20 @@ class GtpConnection():
             board_color = args[0].lower()
             board_move = args[1]
 
-            #~~~~~~~~~~~
+
             if board_color not in {'b','w'}:
-                self.respond("Illegal Move: {}".format(board_color, board_move, self.illegalmsg[1]))
+                self.respond("Illegal Move: {}".format(board_color+' '+board_move+' '+self.illegalmsg[1]))
                 return
-            #~~~~~~~~~~~
+
 
             color= GoBoardUtil.color_to_int(board_color)
             if args[1].lower()=='pass':
                 #self.debug_msg("Player {} is passing\n".format(args[0]))
 
-                #~~~~~~~~~~~~~~~~~
-                self.respond("Illegal Move: {}".format(board_color, board_move, self.illegalmsg[6]))
+
+                self.respond("Illegal Move: {}".format(board_color+' '+board_move+' '+self.illegalmsg[6]))
                 return
-                #~~~~~~~~~~~~~~~~~
+
 
             move = GoBoardUtil.move_to_coord(args[1], self.board.size)
             if move:
@@ -358,7 +358,7 @@ class GtpConnection():
 
             #############
             if board_color not in {'b','w'}:
-                self.respond("Illegal Move: {}".format(board_color, self.illegalmsg[1]))
+                self.respond("Illegal Move: {}".format(board_color+' '+self.illegalmsg[1]))
                 return
             #############
 
