@@ -303,7 +303,8 @@ class GtpConnection():
                 self.error("Error in executing the move %s, check given move: %s"%(move,args[1]))
                 return
             if not self.board.move(move, color):
-                self.respond("Illegal Move: {}".format(board_move))
+                #print( type(move) ,color,board_move)
+                self.respond("Illegal Move: {}".format(self.board.check_legal(move, color)[1])) 
                 return
             else:
                 self.debug_msg("Move: {}\nBoard:\n{}\n".format(board_move, str(self.board.get_twoD_board())))
