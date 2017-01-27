@@ -24,3 +24,11 @@ play w b3
 play b a3
 play w a4
 showboard
+#legal_moves w
+play b
+play b d2 f 
+play c3 d
+play b c99
+play b lw
+#boardsize 26
+#play b a1
