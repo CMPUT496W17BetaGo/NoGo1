@@ -40,10 +40,10 @@ play b b4
 8 play w a4
 #? [illegal move: w a4 suicide]
 
-# Check the legal moves of player w (all the empty points except a2 a4)
+# Check the legal moves of player w 
 9 legal_moves w
 #? [b3 c1 c2 c4 d2 d3 d4]
 
-# Check the legal moves of player b (all the empty points except a1)
-10 legal_moves b
-#? [a2 a4 b3 c2 c4 d2 d3 d4]
+# Check if the move is pass
+10 play b pass
+#? [illegal move: b pass]
