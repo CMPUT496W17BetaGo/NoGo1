@@ -1,0 +1,49 @@
+boardsize 4
+clear_board
+
+# Check the number of arguments
+1 play b
+#? [illegal move: b wrong number of arguments]
+
+# Check the number of arguments
+2 play b a1 a2
+#? [illegal move: b a1 a2 wrong number of arguments]
+
+# Check the player color
+3 play s a1
+#? [illegal move: s a1 wrong color]
+
+# Check the coordinate
+4 play b c-1
+#? [illegal move: b c-1 wrong coordinate]
+
+# Check the coordinate
+5 play b h3
+#? [illegal move: b h3 wrong coordinate]
+
+# Check if the coordinate is occupied
+play b a1
+6 play w a1
+#? [illegal move: w a1 occupied]
+
+# Check if the move is capturing
+play w b1
+play b b2
+play w c3
+7 play b c1
+#? [illegal move: b c1 capture]
+
+# Check if the move is suicide
+play b a3
+play w d1
+play b b4
+8 play w a4
+#? [illegal move: w a4 suicide]
+
+# Check the legal moves of player w (all the empty points except a2 a4)
+9 legal_moves w
+#? [b3 c1 c2 c4 d2 d3 d4]
+
+# Check the legal moves of player b (all the empty points except a1)
+10 legal_moves b
+#? [a2 a4 b3 c2 c4 d2 d3 d4]
