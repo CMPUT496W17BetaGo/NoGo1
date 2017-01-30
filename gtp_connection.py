@@ -285,7 +285,7 @@ class GtpConnection():
 
             #~~~~~~~~~~~~~~~~~
             if board_color not in {'b','w'}:
-                self.respond("illegal Move: "+format(board_color+' '+self.illegalmsg[1]))
+                self.respond("illegal move: "+format(board_color+' '+self.illegalmsg[1]))
                 return
             #~~~~~~~~~~~~~~~~~
 
@@ -314,7 +314,7 @@ class GtpConnection():
             board_move = args[1]
 
             if board_color not in {'b','w'}:
-                self.respond("illegal Move: {}".format(board_color+' '+board_move+' '+self.illegalmsg[1]))
+                self.respond("illegal move: {}".format(board_color+' '+board_move+' '+self.illegalmsg[1]))
                 return
 
 
@@ -324,7 +324,7 @@ class GtpConnection():
                 #self.debug_msg("Player {} is passing\n".format(args[0]))
 
 
-                self.respond("illegal Move: {}".format(board_color+' '+board_move))
+                self.respond("illegal move: {}".format(board_color+' '+board_move))
                 return
 
 
