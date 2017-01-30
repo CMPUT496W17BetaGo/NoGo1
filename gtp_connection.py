@@ -115,11 +115,14 @@ class GtpConnection():
         # Strip leading numbers from regression tests
         if command[0].isdigit():
             command = re.sub("^\d+", "", command).lstrip()
-
         elements = command.split()
         if not elements:
             return
         command_name = elements[0]; args = elements[1:]
+        if command_name == 'play' and len(args) != 2:
+            msg = (' ').join(args) + ' wrong number of arguments'
+            self.respond("illegal move: {}".format(msg))
+            return
         if self.arg_error(command_name, len(args)):
             return
         if command_name in self.commands:
@@ -279,7 +282,7 @@ class GtpConnection():
 
             #~~~~~~~~~~~~~~~~~
             if board_color not in {'b','w'}:
-                self.respond("Illegal Move: "+format(board_color+' '+self.illegalmsg[1]))
+                self.respond("illegal Move: "+format(board_color+' '+self.illegalmsg[1]))
                 return
             #~~~~~~~~~~~~~~~~~
 
@@ -309,7 +312,7 @@ class GtpConnection():
 
 
             if board_color not in {'b','w'}:
-                self.respond("Illegal Move: {}".format(board_color+' '+board_move+' '+self.illegalmsg[1]))
+                self.respond("illegal Move: {}".format(board_color+' '+board_move+' '+self.illegalmsg[1]))
                 return
 
 
@@ -318,11 +321,15 @@ class GtpConnection():
                 #self.debug_msg("Player {} is passing\n".format(args[0]))
 
 
-                self.respond("Illegal Move: {}".format(board_color+' '+board_move+' '+self.illegalmsg[6]))
+                self.respond("illegal Move: {}".format(board_color+' '+board_move))
                 return
 
 
             move = GoBoardUtil.move_to_coord(args[1], self.board.size)
+            print(move)
+            if move == 'wrong coordinate':
+                self.respond("illegal move: {}".format(args[0] + ' ' +  args[1]+ ' ' + move)) 
+            
             if move:
                 move = self.board._coord_to_point(move[0],move[1])
             # move == None on pass
@@ -330,7 +337,13 @@ class GtpConnection():
                 self.error("Error in executing the move %s, check given move: %s"%(move,args[1]))
                 return
             if not self.board.move(move, color):
-                self.respond("Illegal Move: {}".format(board_move))
+                msg = self.board._play_move(move, color)[1]
+                if msg == 'occupied':
+                    self.respond("illegal move: {}".format(args[0] + ' ' +  args[1]+ ' ' + msg)) 
+                elif msg == 'capture':
+                    self.respond("illegal move: {}".format(args[0] + ' ' +  args[1]+ ' ' + msg))
+                elif msg == 'suicide':
+                    self.respond("illegal move: {}".format(args[0] + ' ' +  args[1]+ ' ' + msg))
                 return
             else:
                 self.debug_msg("Move: {}\nBoard:\n{}\n".format(board_move, str(self.board.get_twoD_board())))
@@ -339,7 +352,7 @@ class GtpConnection():
             self.respond('Error: {}'.format(str(e)))
 
     def final_score_cmd(self, args):
-        self.respond(self.board.final_score(self.komi))
+        self.respond(self.board.final_score(self.komi)) 
 
     def genmove_cmd(self, args):
         """
@@ -358,7 +371,7 @@ class GtpConnection():
 
             #############
             if board_color not in {'b','w'}:
-                self.respond("Illegal Move: {}".format(board_color+' '+self.illegalmsg[1]))
+                self.respond("illegal Move: {}".format(board_color+' '+self.illegalmsg[1]))
                 return
             #############
 

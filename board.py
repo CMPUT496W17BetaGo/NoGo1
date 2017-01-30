@@ -58,6 +58,7 @@ class GoBoard(object):
             Whether the playing point with the given color is
             legal.
         """
+        #print(point ,color)
         sboard = np.array(self.board, copy=True)
         # swap out true board for simulation board, and try to play the move
         result, _=self._play_move(point, color)
@@ -408,10 +409,12 @@ class GoBoard(object):
         ---------
         State of move and appropriate message for that move
         """
-
+        d = {1:'a',2:'b',3:'c',4:'d',5:'e',6:'f',7:'g',8:'h'}
         if self.board[point] != EMPTY:
             c=self._point_to_coord(point)
-            msg = "Row and Column: %d %d is already filled with a %s stone"%(c[0],c[1],GoBoardUtil.int_to_color(color))
+           # msg = "Row and Column: %d %d is already filled with a %s stone"%(c[0],c[1],GoBoardUtil.int_to_color(color))
+            
+            msg = 'occupied'
             return False,msg
         if point == self.ko_constraint:
             msg ="KO move is not permitted!"
@@ -422,12 +425,15 @@ class GoBoard(object):
         single_captures = []
         cap_inds = None
         neighbors = self._neighbors(point)
+        
+        #print(neighbors)
         for n in neighbors:
             if self.board[n]==BORDER:
                 continue
             if self.board[n]!=color:
                 if self.board[n]!=EMPTY:
                     fboard = self._flood_fill(n)
+                    
                     if not self._liberty_flood(fboard):
                         #cap_inds = fboard==FLOODFILL
                         #self.caps = np.where(fboard==FLOODFILL)
@@ -442,8 +448,11 @@ class GoBoard(object):
                         #else :
                         #    self.black_captures += num_captures
                         #self.board[cap_inds]=EMPTY
+
                         self.board[point] = EMPTY
-                        return False, "Capturing is illegal"
+                        
+                        msg = "capture"
+                        return False, msg                
 
         in_enemy_eye = self._is_eyeish(point) != color
         fboard = self._flood_fill(point)
@@ -459,7 +468,8 @@ class GoBoard(object):
             if cap_inds!= None:
                 self.board[cap_inds]=GoBoardUtil.opponent(color)
             c=self._point_to_coord(point)
-            msg = "Suicide move with color %s in the row and column: %d %d "%(color, c[0],c[1])
+            #msg = "Suicide move with color %s in the row and column: %d %d "%(color, c[0],c[1])
+            msg = "suicide"
             return False, msg
 
 
