@@ -409,7 +409,6 @@ class GoBoard(object):
         ---------
         State of move and appropriate message for that move
         """
-        d = {1:'a',2:'b',3:'c',4:'d',5:'e',6:'f',7:'g',8:'h'}
         if self.board[point] != EMPTY:
             c=self._point_to_coord(point)
            # msg = "Row and Column: %d %d is already filled with a %s stone"%(c[0],c[1],GoBoardUtil.int_to_color(color))
@@ -448,11 +447,9 @@ class GoBoard(object):
                         #else :
                         #    self.black_captures += num_captures
                         #self.board[cap_inds]=EMPTY
-
                         self.board[point] = EMPTY
-                        
                         msg = "capture"
-                        return False, msg                
+                        return False, msg
 
         in_enemy_eye = self._is_eyeish(point) != color
         fboard = self._flood_fill(point)
