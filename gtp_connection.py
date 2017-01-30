@@ -110,10 +110,13 @@ class GtpConnection():
         if not elements:
             return
         command_name = elements[0]; args = elements[1:]
+
         if command_name == 'play' and len(args) != 2:
             msg = (' ').join(args) + ' wrong number of arguments'
             self.respond("illegal move: {}".format(msg))
             return
+        
+        
         if self.arg_error(command_name, len(args)):
             return
         if command_name in self.commands:
@@ -293,15 +296,20 @@ class GtpConnection():
         try:
             board_color = args[0].lower()
             board_move = args[1]
+            
+            if board_color not in ['w','b']:
+                msg = 'wrong color'
+                self.respond("illegal move: {}".format(args[0] + ' ' +  args[1]+ ' ' + msg))
+                return
+            #wrong color    
             color= GoBoardUtil.color_to_int(board_color)
             if args[1].lower()=='pass':
                 self.debug_msg("Player {} is passing\n".format(args[0]))
                 self.respond()
                 return
             move = GoBoardUtil.move_to_coord(args[1], self.board.size)
-            print(move)
-            if move == 'wrong coordinate':
-                self.respond("illegal move: {}".format(args[0] + ' ' +  args[1]+ ' ' + move)) 
+            #if move == 'wrong coordinate':
+                #self.respond("illegal move: {}".format(args[0] + ' ' +  args[1]+ ' ' + move)) 
             
             if move:
                 move = self.board._coord_to_point(move[0],move[1])
@@ -310,6 +318,7 @@ class GtpConnection():
                 self.error("Error in executing the move %s, check given move: %s"%(move,args[1]))
                 return
             if not self.board.move(move, color):
+                # occupied capture suicide
                 msg = self.board._play_move(move, color)[1]
                 if msg == 'occupied':
                     self.respond("illegal move: {}".format(args[0] + ' ' +  args[1]+ ' ' + msg)) 
@@ -322,6 +331,11 @@ class GtpConnection():
                 self.debug_msg("Move: {}\nBoard:\n{}\n".format(board_move, str(self.board.get_twoD_board())))
             self.respond()
         except Exception as e:
+            # wrong coordinate
+            if 'invalid' == str(e) or str(e) == 'off':
+                msg = 'wrong coordinate'
+                self.respond("illegal move: {}".format(args[0] + ' ' +  args[1]+ ' ' + msg))
+                return
             self.respond('Error: {}'.format(str(e)))
 
     def final_score_cmd(self, args):

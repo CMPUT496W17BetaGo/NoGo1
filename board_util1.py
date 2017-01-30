@@ -157,11 +157,9 @@ class GoBoardUtil(object):
             if row < 1:
                 raise ValueError
         except (IndexError, ValueError):
-            raise ValueError("invalid")
-           # raise ValueError("invalid point: '%s'" % s)
+            raise ValueError("invalid point: '%s'" % s)
         if not (col <= board_size and row <= board_size):
-            raise ValueError("off")
-            # raise ValueError("point is off board: '%s'" % s)
+            raise ValueError("point is off board: '%s'" % s)
         return row, col
     
     @staticmethod
