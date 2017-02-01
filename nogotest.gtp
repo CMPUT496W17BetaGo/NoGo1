@@ -46,4 +46,4 @@ play b b4
 
 # Check if the move is pass
 10 play b pass
-#? [illegal move: b pass]
+#? [illegal move: b pass wrong coordinate]

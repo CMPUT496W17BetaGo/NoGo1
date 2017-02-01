@@ -69,7 +69,7 @@ class GtpConnection():
 
         self.illegalmsg = ["wrong number of arguments",
                            "wrong color",
-                           "wrong coodinate",
+                           "wrong coordinate",
                            "occupied",
                            "capture",
                            "suicide",
@@ -324,7 +324,7 @@ class GtpConnection():
                 #self.debug_msg("Player {} is passing\n".format(args[0]))
 
 
-                self.respond("illegal move: {}".format(board_color+' '+board_move))
+                self.respond("illegal move: {}".format(board_color+' '+board_move+' '+self.illegalmsg[2]))
                 return
 
 
